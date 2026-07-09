@@ -124,7 +124,7 @@ The local classification model is a deep Convolutional Neural Network (CNN) trai
 *   **Resolution:** Inputs are automatically scaled to `(128, 128, 3)` and normalized to `[0.0, 1.0]`.
 
 ### Dataset Origin
-The **PlantVillage Dataset** is an open-access repository of **54,306 images** of healthy and diseased plant leaves, introduced in *"Using Deep Learning for Image-Based Plant Disease Detection"* by Mohanty et al. (2016). It covers 14 crop species and 26 diseases.
+The **PlantVillage Dataset** is an open-access repository of **54,306 images** of healthy and diseased plant leaves, introduced in *"Using Deep Learning for Image-Based Plant Disease Detection"* by keggle.com. . It covers 14 crop species and 26 diseases.
 
 ---
 
