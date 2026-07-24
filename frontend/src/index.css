@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  --color-cs-void: #0c130c;
+  --color-cs-deep: #111b11;
+  --color-cs-forest: #0f3a1f;
+  --color-cs-emerald: #065f46;
+  --color-cs-jade: #10b981;
+  --color-cs-mint: #34d399;
+  --color-cs-lime: #a3e635;
+  --color-cs-amber: #fbbf24;
+  --color-cs-coral: #f97316;
+  --color-cs-sky: #06b6d4;
+  --color-cs-white: #f0fdf4;
+  --color-cs-muted: rgba(240, 253, 244, 0.55);
+  --color-cs-border: rgba(52, 211, 153, 0.15);
+  
+  --font-clash: "Clash Display", sans-serif;
+  --font-satoshi: Satoshi, sans-serif;
+  
+  --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.15);
+}
+
+@utility bg-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+@layer base {
+  body {
+    @apply bg-cs-void text-cs-white font-satoshi selection:bg-cs-emerald selection:text-cs-white;
+    background-color: #0c130c;
+  }
+  
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #111b11;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #065f46;
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #10b981;
+  }
+}
+
+/* Custom leaflet container overrides to fit our theme */
+.leaflet-container {
+  background-color: #111b11 !important;
+  border: 1px solid rgba(52, 211, 153, 0.15);
+  border-radius: 0.75rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
