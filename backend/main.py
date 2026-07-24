@@ -36,6 +36,10 @@ from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
 from reportlab.lib.enums import TA_CENTER
 
+# Add parent directory to path so we can import utils from the root
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 # Import local helpers
 from utils.weather_locator import (
     get_ip_location,
@@ -78,14 +82,14 @@ CNN_MODEL_ERR = None
 class_names = []
 
 try:
-    CNN_MODEL = tf.keras.models.load_model("model/best_plant_disease_model.keras")
+    CNN_MODEL = tf.keras.models.load_model("../model/best_plant_disease_model.keras")
     logger.info("Loaded CNN model successfully.")
 except Exception as e:
     CNN_MODEL_ERR = str(e)
     logger.error(f"Failed to load CNN model: {e}")
 
 try:
-    with open("model/class_names.txt", "r") as f:
+    with open("../model/class_names.txt", "r") as f:
         class_names = [l.strip() for l in f if l.strip()]
     logger.info(f"Loaded {len(class_names)} class names.")
 except Exception as e:
