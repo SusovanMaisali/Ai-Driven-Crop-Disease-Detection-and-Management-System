@@ -2,26 +2,29 @@
 ### *Intelligent Crop Disease Detection & Farm Management Dashboard*
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.32.0%2B-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![React](https://img.shields.io/badge/React-18.0%2B-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100.0%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.0-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.11%2B-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
 [![Gemini](https://img.shields.io/badge/Google_Gemini-Vision_2.5_Flash-4285F4?logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
-[![License](https://img.shields.io/badge/License-CC--BY--SA--3.0-green)](https://creativecommons.org/licenses/by-sa/3.0/)
 
 ---
 
 ## 📖 Project Overview
-**CropSense AI v3.0 Pro** is a production-ready, interactive farm management and agricultural diagnosis platform. It implements a **dual-engine AI architecture** to identify leaf diseases with high precision. By combining a local convolutional neural network (CNN) trained on over 54,000 leaf images (PlantVillage dataset) with Google Gemini Vision’s large multimodal capabilities, the system classifies 38 distinct crop diseases, flags non-leaf submissions, and diagnoses generic plant species in real-time. 
+**CropSense AI v3.0 Pro** is a production-ready, interactive farm management and agricultural diagnosis platform. It implements a **decoupled modern architecture** with a **FastAPI backend** and a **Vite + React + Tailwind CSS v4** frontend.
+
+The system uses a **dual-engine AI architecture** to identify leaf diseases with high precision. By combining a local convolutional neural network (CNN) trained on over 54,000 leaf images (PlantVillage dataset) with Google Gemini Vision’s large multimodal capabilities, the system classifies 38 distinct crop diseases, flags non-leaf submissions, and diagnoses generic plant species in real-time.
 
 Additionally, the system provides geolocated weather analysis, localized crop health risk calculations, custom PDF reporting, audio speech recommendation readouts, translation into 70+ languages, and interactive chat support.
 
 ---
 
-## 🧱 Implemented Features
+## 🧱 Key Features
 
 *   **⚡ Dual AI Diagnostics (CNN & Gemini Vision):** Run dual checks using a fast, offline-capable CNN model and fallback Google Gemini Vision API to confirm species and disease details.
 *   **🗺️ Conv attention visualizations (Grad-CAM):** Plots visual heatmaps mapping the exact convolutional activation regions of the CNN model.
 *   **📸 Dynamic Leaf validation:** Employs HSV color threshold checks and brightness constraints to instantly validate and reject non-leaf submissions.
-*   **📊 Farming Analytics Dashboard:** Monitor diagnostic scans activity trends over time, plant categories monitored, and diagnosed severity distributions via custom Plotly graphs.
+*   **📊 Farming Analytics Dashboard:** Monitor diagnostic scans activity trends over time, plant categories monitored, and diagnosed severity distributions via custom graphs (Recharts).
 *   **📜 Searchable Scan Registry:** Manage, filter, search, sort, and permanently delete local predictions stored in your personal CSV database log.
 *   **📄 Bespoke PDF Auditing Reports:** Instantly compile diagnostic findings, local coordinate logs, temperature indices, weather risks, organic treatment details, NPK formulas, and crop rotation advisories into download-ready PDF booklets.
 *   **🌍 Multilingual Speech Readouts:** Translates all AI recommendations, symptoms, and organic treatment plans into 70+ languages with immediate audio readouts.
@@ -32,62 +35,24 @@ Additionally, the system provides geolocated weather analysis, localized crop he
 ---
 
 ## 🎨 Technologies Used
-| Layer | Tech / Tool / Library | Purpose |
-|---|---|---|
-| **Core Framework** | Streamlit | Python-based interactive web frontend & layout |
-| **Deep Learning** | TensorFlow / Keras | CNN Model loading, predictions, and weights |
-| **Generative AI** | Google Gemini 2.5 Flash API | Zero-shot image diagnosis & chatbot memory |
-| **Computer Vision** | OpenCV / PIL | Image preprocessing, quality scoring, and Grad-CAM math |
-| **Data Analytics** | Pandas / Numpy | Diagnostic histories, CSV operations, database logs |
-| **Plotting & Visuals** | Plotly Express / Matplotlib | Interactive dashboard charts & color mappings |
-| **Document Generation** | ReportLab | PDF Report compiler & styling engine |
-| **TTS & Speech** | gTTS | Google Text-to-Speech audio reader |
-| **Translation Engine** | Deep Translator | Recommendations translator into 70+ global languages |
-| **APIs Used** | Open-Meteo & Geolocation | Weather variables & coordinate tracking |
 
----
+### Backend (`/backend`)
+* **FastAPI**: Python-based high-performance REST API routing.
+* **TensorFlow / Keras**: CNN Model loading and inferences.
+* **Google Gemini 2.5 Flash API**: Zero-shot image diagnosis & context-aware chatbot.
+* **OpenCV / PIL**: Image preprocessing, quality scoring, and Grad-CAM calculations.
+* **Pandas / Numpy**: Local CSV prediction histories and array calculations.
+* **ReportLab**: PDF report template generator.
+* **gTTS**: Text-to-speech summary reader.
+* **Deep Translator**: Fast translation into 70+ languages.
 
-## 📐 Project Architecture & Workflow
-
-```mermaid
-graph TD
-    A[User Uploads Image] --> B{HSV Leaf Validator}
-    B -- Invalid Image --> C[Show Error Dialog]
-    B -- Valid Leaf --> D[Evaluate Quality Score]
-    D --> E[Parallel Analysis Processing]
-    E --> F[PlantVillage-CNN Model]
-    E --> G[Gemini Vision Engine]
-    F --> H[Grad-CAM Attention Heatmap]
-    F --> I[Top-3 Confidence Metrics]
-    G -- Success --> J[Identify Plant, Pathogen, Symptoms, & Treatments]
-    G -- API Offline / Limited --> K[Fallback: Offline Database Profiles]
-    J & K --> L[Translations Engine & gTTS Voice Output]
-    L --> M[PDF Report Compilation]
-    L --> N[Interactive Agronomy Chatbot]
-    O[IP Geolocation] --> P[Open-Meteo Weather API]
-    P --> Q[Calculate Agricultural Climate Risk Warnings]
-    Q & M & N --> R[Premium Dark Dashboard Display]
-```
-
-### 🔄 Diagnosis & Chat Workflow
-1.  **Authentication:** The user logs in securely using their registered mobile number, CAPTCHA validation, and a simulated 4-digit OTP.
-2.  **Scan Phase:** The user uploads a leaf image (or captures one via webcam). The system checks if it is a valid leaf and measures its contrast and sharpness.
-3.  **Analytics Phase:** The system extracts GPS coordinates to query the local weather environment. The CNN outputs raw class scores, and Gemini compiles advanced symptoms, chemical active ingredients, organic remedies, and NPK parameters.
-4.  **Interaction Phase:** The agronomist dashboard updates. Users can download PDF reports, listen to vocal readouts, or query the chatbot about preventative farming practices.
-
----
-
-## 📸 Screenshots Section
-
-Below are visual design mockups representing the premium Dark Mode dashboard interfaces:
-
-| Sign In & Access Control | Analysis Dashboard |
-|:---:|:---:|
-| `![Sign In](https://via.placeholder.com/600x350/0c130c/10b981?text=CropSense+Access+Control+Panel)` | `![Dashboard](https://via.placeholder.com/600x350/0c130c/10b981?text=CropSense+Diagnostics+Dashboard)` |
-
-| Geolocation & Weather Risks | Chatbot & Voice Readout |
-|:---:|:---:|
-| `![Weather](https://via.placeholder.com/600x350/0c130c/10b981?text=IP+Geolocation+%26+Local+Climate+Metrics)` | `![Chatbot](https://via.placeholder.com/600x350/0c130c/10b981?text=Agronomy+Chatbot+%26+Speech+Synthesis)` |
+### Frontend (`/frontend`)
+* **Vite + React**: High-performance Single Page Application (SPA).
+* **Tailwind CSS v4**: CSS-first layout styling.
+* **Recharts**: Responsive charting widgets (Trends, categories, and severities).
+* **Leaflet & React-Leaflet**: Interactive map mapping scan coordinates.
+* **React Webcam**: In-app camera utility for taking leaf photos.
+* **Lucide React**: Clean icons.
 
 ---
 
@@ -95,22 +60,39 @@ Below are visual design mockups representing the premium Dark Mode dashboard int
 
 ```
 PlantVillage-Dataset/
-├── .streamlit/
-│   └── secrets.toml          # Streamlit API Secrets
-├── history/
-│   └── predictions_*.csv    # User-specific local diagnostic logs
-├── model/
-│   ├── best_plant_disease_model.keras  # Trained TensorFlow CNN weights
-│   └── class_names.txt      # Class name indexes (38 PlantVillage classes)
-├── utils/
-│   ├── __init__.py
-│   ├── offline_database.py  # Local fallback database dictionary (38 classes)
-│   └── weather_locator.py   # Geolocation, Open-Meteo, & Climate Risk calculations
-├── .env.example             # Template for API credentials
-├── .gitignore               # Ignored system and local folders
-├── app.py                   # Streamlit Frontend, logic flow, and CSS styles
-├── requirements.txt         # Package dependencies file
-└── README.md                # Project documentation
+├── backend/
+│   ├── main.py                     # FastAPI entry point & API router
+│   ├── requirements.txt            # Python dependencies (FastAPI, uvicorn, tensorflow, etc.)
+│   ├── model/                      # ML Models directory
+│   │   ├── best_plant_disease_model.keras  # Trained TensorFlow CNN weights
+│   │   └── class_names.txt          # Class name indexes (38 classes)
+│   ├── utils/                      # Helper modules
+│   │   ├── __init__.py
+│   │   ├── weather_locator.py      # Weather & geolocation helpers
+│   │   └── offline_database.py     # Static fallback treatment database
+│   ├── history/                    # Local storage (users.json and CSV history logs)
+│   └── test_main.py                # Backend unit tests
+├── frontend/
+│   ├── package.json                # npm package definitions
+│   ├── vite.config.js              # Vite configuration
+│   ├── tailwind.config.js          # Tailwind CSS style overrides
+│   ├── index.html                  # Core HTML file
+│   └── src/
+│       ├── main.jsx                # React Entry point
+│       ├── App.jsx                 # App router & global session state
+│       ├── index.css               # Global CSS & Tailwind CSS v4 variables
+│       ├── components/
+│       │   ├── Layout.jsx          # Sidebar, profile, language selector
+│       │   ├── Auth.jsx            # Sign-In / Register with Captcha & OTP
+│       │   ├── Home.jsx            # Upload, Webcam, Diagnosis console, Chatbot
+│       │   ├── Dashboard.jsx       # Charts & map analytics
+│       │   ├── History.jsx         # Search, export, sync, delete timeline logs
+│       │   └── About.jsx           # About page details
+│       └── utils/
+│           └── api.js              # API fetch client
+├── .env.example                    # Template for API credentials
+├── .gitignore                      # Ignored system and local folders
+└── README.md                       # Combined project description & running instructions
 ```
 
 ---
@@ -120,7 +102,7 @@ PlantVillage-Dataset/
 ### CNN Classifier
 The local classification model is a deep Convolutional Neural Network (CNN) trained on the **PlantVillage dataset**.
 *   **Classes Supported:** 38 distinct labels (covering Apple, Blueberry, Cherry, Corn, Grape, Peach, Pepper, Potato, Raspberry, Soybean, Strawberry, Squash, and Tomato).
-*   **Class Mapping:** Refer to [model/class_names.txt](file:///c:/COLLAGE_ALL_DOCUMENTS/CROP%20SENSE%20AI/PlantVillage-Dataset/model/class_names.txt) for indexes.
+*   **Class Mapping:** Refer to [backend/model/class_names.txt](file:///c:/COLLAGE_ALL_DOCUMENTS/CROP%20SENSE%20AI/PlantVillage-Dataset/backend/model/class_names.txt) for indexes.
 *   **Resolution:** Inputs are automatically scaled to `(128, 128, 3)` and normalized to `[0.0, 1.0]`.
 
 ### Dataset Origin
@@ -128,97 +110,52 @@ The **PlantVillage Dataset** is an open-access repository of **54,306 images** o
 
 ---
 
-## 🔌 API Integrations & Setup
+## ⚙️ Local Installation & Running Guide
 
-The application integrates with the following external APIs:
-1.  **Google Gemini AI API (`google-generativeai`):** Used for advanced disease diagnostics, treatment, fertilizer plans, and chatbot responses.
-2.  **Open-Meteo API:** Used to fetch real-time climate parameters (temperatures, precipitation, wind speeds, UV index) using geolocated GPS coordinates. No API key required for weather metrics.
+### 1. Backend Setup (`/backend`)
+1. Navigate to the `backend` folder:
+   ```bash
+   cd backend
+   ```
+2. Create and activate a Python virtual environment:
+   ```bash
+   python -m venv venv
+   # On Windows (PowerShell):
+   .\venv\Scripts\Activate.ps1
+   # On Unix/macOS:
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Define the `GEMINI_API_KEY` environment variable:
+   *   **On Windows (PowerShell):** `$env:GEMINI_API_KEY="your-key-here"`
+   *   **On Linux/macOS:** `export GEMINI_API_KEY="your-key-here"`
+5. Start the FastAPI development server:
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+6. (Optional) Run the unit tests to verify:
+   ```bash
+   python -m pytest
+   ```
 
-### 🔑 Local Environment Configuration
-Create a `.env` file or Streamlit configuration containing your Google Gemini API token. 
-
-Copy the `.env.example` template:
-```bash
-cp .env.example .env
-```
-
-Define the API key inside `.env`:
-```env
-GEMINI_API_KEY="your-google-gemini-api-key-here"
-```
-
-For Streamlit environments, secrets can also be declared in `.streamlit/secrets.toml`:
-```toml
-GEMINI_API_KEY = "your-google-gemini-api-key-here"
-```
-
----
-
-## 📦 Installation Guide
-
-### Prerequisites
-*   Python 3.10 or 3.11 installed.
-*   Pip package installer.
-*   Git (for version control).
-
-### Step-by-step Local Setup
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/SusovanMaisali/Ai-Driven-Crop-Disease-Detection-and-Management-System.git
-    cd Ai-Driven-Crop-Disease-Detection-and-Management-System
-    ```
-2.  **Create a Virtual Environment:**
-    ```bash
-    python -m venv venv
-    # On Windows (PowerShell):
-    .\venv\Scripts\Activate.ps1
-    # On Unix/macOS:
-    source venv/bin/activate
-    ```
-3.  **Install Dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-4.  **Verify Model File Presence:**
-    Ensure the TensorFlow model file `best_plant_disease_model.keras` is placed inside the `model/` folder. If it is missing, download the pre-trained weights and store it as:
-    `model/best_plant_disease_model.keras`
-5.  **Run the Streamlit Application:**
-    ```bash
-    streamlit run app.py
-    ```
-
----
-
-## 🌐 Deployment Guide
-
-### Streamlit Community Cloud (Recommended)
-1.  Push the repository to GitHub.
-2.  Log in to [Streamlit Share](https://share.streamlit.io/).
-3.  Select your repository, choose the `main` branch, and set `app.py` as the entrypoint.
-4.  In the deployment dashboard, open **Advanced Settings**.
-5.  Add your **Secrets** under the Secrets text area:
-    ```toml
-    GEMINI_API_KEY = "your-google-gemini-api-key-here"
-    ```
-6.  Click **Deploy**.
-
-### Render / Railway
-Deploy using a `Dockerfile` or direct python script executor:
-*   **Start Command:** `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`
-*   **Env Variables:** Inject `GEMINI_API_KEY` into the dashboard environment settings panel.
-
----
-
-## 🚀 Future Roadmap / Improvements
-*   **📡 IoT Moisture Sensors Integration:** Connect and plot local soil pH, moisture, and nitrogen metrics alongside the diagnostic page in real-time.
-*   **📱 Edge Deployment:** Build lightweight TensorFlow Lite (`.tflite`) compile models to enable zero-network classifications on Android and iOS.
-*   **🌾 Expanded Biological Datasets:** Extend model classes to diagnose crop weeds, invasive insect pests, and fruit quality deterioration indicators.
-*   **💬 Twilio SMS Alerts:** Provide SMS-based text recommendation digests for smallholder farmers operating on feature phones.
-
----
-
-## 📄 License
-The **PlantVillage dataset** is licensed under **CC-BY-SA-3.0**. The application code is open-source and released under the **MIT License**.
+### 2. Frontend Setup (`/frontend`)
+1. Open a new terminal and navigate to the `frontend` folder:
+   ```bash
+   cd frontend
+   ```
+2. Install npm dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+4. Access the web app in your browser at:
+   `http://localhost:5173`
 
 ---
 
