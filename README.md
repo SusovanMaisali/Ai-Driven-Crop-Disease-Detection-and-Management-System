@@ -63,19 +63,11 @@ PlantVillage-Dataset/
 ├── backend/
 │   ├── main.py                     # FastAPI entry point & API router
 │   ├── requirements.txt            # Python dependencies (FastAPI, uvicorn, tensorflow, etc.)
-│   ├── model/                      # ML Models directory
-│   │   ├── best_plant_disease_model.keras  # Trained TensorFlow CNN weights
-│   │   └── class_names.txt          # Class name indexes (38 classes)
-│   ├── utils/                      # Helper modules
-│   │   ├── __init__.py
-│   │   ├── weather_locator.py      # Weather & geolocation helpers
-│   │   └── offline_database.py     # Static fallback treatment database
-│   ├── history/                    # Local storage (users.json and CSV history logs)
-│   └── test_main.py                # Backend unit tests
+│   ├── test_main.py                # Backend unit tests
 ├── frontend/
+│   ├── vercel.json                 # Vercel SPA Routing Configuration
 │   ├── package.json                # npm package definitions
 │   ├── vite.config.js              # Vite configuration
-│   ├── tailwind.config.js          # Tailwind CSS style overrides
 │   ├── index.html                  # Core HTML file
 │   └── src/
 │       ├── main.jsx                # React Entry point
@@ -90,6 +82,9 @@ PlantVillage-Dataset/
 │       │   └── About.jsx           # About page details
 │       └── utils/
 │           └── api.js              # API fetch client
+├── model/                          # Trained TensorFlow CNN weights
+├── utils/                          # Helper modules
+├── render.yaml                     # Render Service Blueprint
 ├── .env.example                    # Template for API credentials
 ├── .gitignore                      # Ignored system and local folders
 └── README.md                       # Combined project description & running instructions
@@ -102,11 +97,11 @@ PlantVillage-Dataset/
 ### CNN Classifier
 The local classification model is a deep Convolutional Neural Network (CNN) trained on the **PlantVillage dataset**.
 *   **Classes Supported:** 38 distinct labels (covering Apple, Blueberry, Cherry, Corn, Grape, Peach, Pepper, Potato, Raspberry, Soybean, Strawberry, Squash, and Tomato).
-*   **Class Mapping:** Refer to [backend/model/class_names.txt](file:///c:/COLLAGE_ALL_DOCUMENTS/CROP%20SENSE%20AI/PlantVillage-Dataset/backend/model/class_names.txt) for indexes.
+*   **Class Mapping:** Refer to [model/class_names.txt](file:///c:/COLLAGE_ALL_DOCUMENTS/CROP%20SENSE%20AI/PlantVillage-Dataset/model/class_names.txt) for indexes.
 *   **Resolution:** Inputs are automatically scaled to `(128, 128, 3)` and normalized to `[0.0, 1.0]`.
 
 ### Dataset Origin
-The **PlantVillage Dataset** is an open-access repository of **54,306 images** of healthy and diseased plant leaves, introduced in *"Using Deep Learning for Image-Based Plant Disease Detection"* by keggle.com. . It covers 14 crop species and 26 diseases.
+The **PlantVillage Dataset** is an open-access repository of **54,306 images** of healthy and diseased plant leaves, introduced in *"Using Deep Learning for Image-Based Plant Disease Detection"* by Mohanty et al. (2016). It covers 14 crop species and 26 diseases.
 
 ---
 
@@ -156,6 +151,32 @@ The **PlantVillage Dataset** is an open-access repository of **54,306 images** o
    ```
 4. Access the web app in your browser at:
    `http://localhost:5173`
+
+---
+
+## 🌐 Production Deployment Guide
+
+### 1. Backend Deployment (Render)
+1. Log in to [Render](https://render.com/).
+2. Click **New** -> **Blueprint**.
+3. Connect your GitHub repository.
+4. Render will automatically read `render.yaml` and configure the web service.
+5. In the Render web service dashboard, click **Environment** and add:
+   *   `GEMINI_API_KEY`: Your Google Gemini API Key.
+   *   `ALLOWED_ORIGINS`: Your Vercel frontend URL (e.g., `https://cropsense.vercel.app`) to authorize CORS requests.
+6. Trigger the deployment. Your API service will run on `https://cropsense-backend.onrender.com`.
+
+### 2. Frontend Deployment (Vercel)
+1. Log in to [Vercel](https://vercel.com/).
+2. Select **Import Project** and link your GitHub repository.
+3. Configure the following project directory settings:
+   *   **Root Directory:** `frontend`
+   *   **Framework Preset:** `Vite`
+   *   **Build Command:** `npm run build`
+   *   **Output Directory:** `dist`
+4. Expand **Environment Variables** and add:
+   *   `VITE_API_BASE_URL`: The URL of your deployed Render backend (e.g. `https://cropsense-backend.onrender.com`).
+5. Click **Deploy**. Your React app will be live on Vercel.
 
 ---
 
